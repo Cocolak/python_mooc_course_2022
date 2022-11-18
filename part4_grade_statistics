@@ -1,0 +1,112 @@
+# Write your solution here
+def take_input():
+    data = []
+    while True:
+        odp = input("Exam points and exercises completed: ").split()
+        if odp == []:
+            break
+        data.append(odp)
+    
+    return data
+
+def exercises_convert_to_points(data):
+    converted = []
+    for x in data:
+        x[0] = int(x[0])
+        x[1] = int(x[1])
+
+        if x[1] == 100:
+            x[1] = 10
+        elif x[1] >=  90:
+            x[1] = 9
+        elif x[1] >=  80:
+            x[1] = 8
+        elif x[1] >=  70:
+            x[1] = 7
+        elif x[1] >=  60:
+            x[1] = 6
+        elif x[1] >=  50:
+            x[1] = 5
+        elif x[1] >=  40:
+            x[1] = 4
+        elif x[1] >=  30:
+            x[1] = 3
+        elif x[1] >=  20:
+            x[1] = 2
+        elif x[1] >=  10:
+            x[1] = 1
+        else:
+            x[1] = 0
+    
+        converted.append(x)
+
+    # Sumary points (exam points + exercise points)
+    points = []
+    for y in converted:
+        points.append(y[0] + y[1])
+
+    return points
+
+def points_to_grade(points):
+    grades = []
+
+    for x in points:
+        if x >= 28:
+            grades.append(5)
+        elif x >= 24:
+            grades.append(4)
+        elif x >= 21:
+            grades.append(3)
+        elif x >= 18:
+            grades.append(2)
+        elif x >= 15:
+            grades.append(1)
+        elif x >= 0:
+            grades.append(0)
+        
+    return grades
+
+
+def show_statistic(points, data):
+    # Convert points to grades
+    grades = points_to_grade(points)
+
+    # Sum points
+    psum = 0
+    for p in points:
+        psum += p
+    
+    # Check how many passes
+    passes = 0
+    i = 0
+    for x in grades:
+        if x == 0 or int(data[i][0]) < 10:
+            grades[i] = 0
+        else:
+            passes += 1
+        i+=1
+
+    # Grade distribution
+    grades_dist = ["", "", "", "", "", ""]
+    for g in grades:
+        grades_dist[g] = grades_dist[g] + "*"
+
+    # Show statistics
+    print("Statistics:")
+    print(f"Points average: {psum/len(points):.1f}")
+    print(f"Pass percentage: {(passes/len(grades)) * 100:.1f}")
+    print("Grade distribution:")
+    print(f"  5: {grades_dist[5]}")
+    print(f"  4: {grades_dist[4]}")
+    print(f"  3: {grades_dist[3]}")
+    print(f"  2: {grades_dist[2]}")
+    print(f"  1: {grades_dist[1]}")
+    print(f"  0: {grades_dist[0]}")
+
+
+def main():
+    data = take_input()
+    points = exercises_convert_to_points(data)
+    show_statistic(points, data)
+
+main()
